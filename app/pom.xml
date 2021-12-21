@@ -15,7 +15,41 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
   <build>
     <finalName>app</finalName>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version>
+            <configuration>
+                <target>
+                    <property name="tomcat.home.dir"
+						location="${env.CATALINA_HOME}" />
+
+					<path id="tomcat.classpath">
+						<fileset dir="${tomcat.home.dir}/lib">
+							<include name="catalina-ant.jar" />
+							<include name="tomcat-coyote.jar" />
+							<include name="tomcat-util.jar" />
+						</fileset>
+						<fileset dir="${tomcat.home.dir}/bin">
+							<include name="tomcat-juli.jar" />
+						</fileset>
+					</path>
+
+					<taskdef name="reload"
+						classname="org.apache.catalina.ant.ReloadTask"
+						classpathref="tomcat.classpath" />
+					 
+					<reload url="http://localhost:8080/manager/text" 
+						username="manager" password="manager" path="/app" />
+
+                </target>
+            </configuration>
+        </plugin>
+    </plugins>
   </build>
+
 </project>
