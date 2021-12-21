@@ -1,0 +1,5 @@
+*.docx
+bin/
+obj/
+target/
+lib/
