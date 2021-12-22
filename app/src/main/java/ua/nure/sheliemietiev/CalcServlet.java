@@ -8,14 +8,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 @WebServlet("/calc")
 public class CalcServlet extends HttpServlet {
 	
+	private static final Log log = LogFactory.getLog(CalcServlet.class);
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		log.debug("doGet");
+		
 		String leftOperandText = req.getParameter("x");
 		String rightOperandText = req.getParameter("y");
 		String operationCode = req.getParameter("op");
+		
+		log.trace("x = " + leftOperandText);
+		log.trace("y = " + rightOperandText);
+		log.trace("op = " + operationCode);
 		
 		req.setAttribute("x", leftOperandText);
 		req.setAttribute("y", rightOperandText);
@@ -46,6 +57,7 @@ public class CalcServlet extends HttpServlet {
 			req.setAttribute("result", result);
 		} catch (NumberFormatException e) {
 			req.setAttribute("error", "One of the parameters is not integer.");
+			log.error("One of the parameters is not integer.");
 		} catch(IllegalArgumentException e) {
 			req.setAttribute("error", "Unknown operation is given.");
 		} catch(ArithmeticException e) {
@@ -54,6 +66,6 @@ public class CalcServlet extends HttpServlet {
 			req.setAttribute("error", e.getMessage());
 		}
 
-		req.getRequestDispatcher("index.jsp").forward(req, resp);;
+		req.getRequestDispatcher("index.jsp").forward(req, resp);
 	}
 }
