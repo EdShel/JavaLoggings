@@ -1,2 +1,2 @@
 cd app
-mvn war:exploded antrun:run
+mvn compile war:exploded antrun:run
